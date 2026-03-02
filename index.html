@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mood Dice 🎲</title>
+  <style>
+    :root { --bg1:#0f172a; --bg2:#1e293b; --card:rgba(255,255,255,.08); --text:#e2e8f0; --muted:#94a3b8; --accent:#38bdf8; }
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:Inter,system-ui,Arial;color:var(--text);background:linear-gradient(135deg,var(--bg1),var(--bg2));display:grid;place-items:center;padding:24px}
+    .card{width:min(760px,100%);background:var(--card);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:24px}
+    .row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}.mood{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text);padding:10px 14px;border-radius:999px;cursor:pointer}
+    .mood.active{background:rgba(56,189,248,.22);border-color:rgba(56,189,248,.6)}.btn{border:none;padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:600}.primary{background:var(--accent);color:#06263a}.ghost{background:rgba(255,255,255,.1);color:var(--text)}
+    .result{border:1px dashed rgba(255,255,255,.25);background:rgba(2,6,23,.45);border-radius:14px;padding:14px;min-height:86px;line-height:1.6}.tag{color:#7dd3fc;font-weight:700}
+  </style>
+</head>
+<body>
+<main class="card">
+<h1>Mood Dice 🎲</h1><p>Pick your mood, roll the dice, and get a fun mini task.</p>
+<div class="row" id="moods"></div>
+<div class="row"><button id="roll" class="btn primary">Roll Suggestion</button><button id="reroll" class="btn ghost">Re-roll</button></div>
+<section class="result" id="result">Choose a mood first 👆</section>
+</main>
+<script>
+const data={happy:["🎧 Make a 3-song mini playlist and share it.","📸 Take one beautiful photo.","📝 Write a 2-line gratitude note."],bored:["🎲 Learn one new shortcut.","🧪 Build a tiny one-file demo in 10 min.","📚 Read one article and list 3 points."],stressed:["🫁 4-7-8 breathing for 1 minute.","🚶 Walk 5 minutes without phone.","🗂️ Do a 3-minute cleanup."],tired:["💧 Drink water and stretch 60 seconds.","🌤️ Open window and 10 deep breaths.","🎵 Play one upbeat song and stand up."],curious:["🛰️ Find one weird space fact.","🔍 Learn 1 new insight from a random topic.","🛠️ Try one new tool for 7 minutes."]};
+const labels={happy:"😄 Happy",bored:"😶 Bored",stressed:"😵 Stressed",tired:"🥱 Tired",curious:"🤔 Curious"};
+let selected=null;const moods=document.getElementById('moods'),res=document.getElementById('result');
+Object.keys(data).forEach(k=>{const b=document.createElement('button');b.className='mood';b.textContent=labels[k];b.onclick=()=>{selected=k;[...moods.children].forEach(x=>x.classList.remove('active'));b.classList.add('active');res.textContent=`Selected mood: ${labels[k]}. Click Roll Suggestion.`};moods.appendChild(b)});
+function roll(){if(!selected){res.textContent='Choose a mood first 👆';return;}const arr=data[selected];const pick=arr[Math.floor(Math.random()*arr.length)];res.innerHTML=`<span class="tag">${labels[selected]}</span><br>${pick}`}
+document.getElementById('roll').onclick=roll;document.getElementById('reroll').onclick=roll;
+</script>
+</body>
+</html>
